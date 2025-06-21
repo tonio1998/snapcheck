@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Traits\TCommonFunctions;
 
 class QuizController extends Controller
 {
+    use TCommonFunctions;
     public function index()
     {
         $userId = auth()->id();
@@ -25,23 +28,22 @@ class QuizController extends Controller
     {
         $validated = $request->validate([
             'class_id' => 'required|exists:classes,id',
-            'user_id' => 'required|exists:users,id',
             'title' => 'required|string',
             'total_items' => 'required|integer',
             'quiz_date' => 'required'
         ]);
 
-        $class = new Quiz($validated);
-        $class->user_id = Auth::id();
-        $this->setCommonFields($class);
-        $class->save();
+        $quiz = new Quiz($validated);
+        $quiz->user_id = Auth::id();
+        $this->setCommonFields($quiz);
+        $quiz->save();
 
         return response()->json($quiz, 201);
     }
 
     public function show($id)
     {
-        return Quiz::with('questions')->findOrFail($id);
+        return Quiz::with(['questions', 'class'])->findOrFail($id);
     }
 
     public function update(Request $request, $id)
@@ -49,6 +51,7 @@ class QuizController extends Controller
         $quiz = Quiz::findOrFail($id);
 
         $validated = $request->validate([
+            'class_id' => 'sometimes|exists:classes,id',
             'title' => 'sometimes|string',
             'total_items' => 'sometimes|integer',
             'quiz_date' => 'required'

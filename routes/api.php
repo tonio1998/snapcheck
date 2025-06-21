@@ -33,6 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('{id}', [ClassroomController::class, 'show'])->name('show');      // classes.show
         Route::put('{id}', [ClassroomController::class, 'update'])->name('update');  // classes.update
         Route::delete('{id}', [ClassroomController::class, 'destroy'])->name('destroy'); // classes.destroy
+        Route::post('list', [ClassroomController::class, 'list'])->name('add-student'); // classes.add-student
     });
 
     Route::prefix('quizzes')->name('quizzes.')->group(function () {
