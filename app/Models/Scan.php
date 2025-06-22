@@ -9,7 +9,7 @@ class Scan extends Model
 {
     use SoftDeletes;
     protected $fillable = [
-        'student_id', 'quiz_id', 'scanned_at', 'score', 'is_checked',
+        'student_id', 'quiz_id', 'scanned_at', 'score', 'is_correct', 'is_reviewed',
         'created_by', 'updated_by', 'created_at',
         'status', 'archived'
     ];

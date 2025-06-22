@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\AnswerKey;
 use App\Models\Quiz;
-use App\Models\QuizQuestion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\TCommonFunctions;
@@ -45,25 +45,33 @@ class QuizController extends Controller
                 $pointsData = $points[$index] ?? [];
                 $score = isset($pointsData['value']) ? (int)$pointsData['value'] : 1;
 
-                $question = QuizQuestion::where('quiz_id', $quizId)
+                $question = AnswerKey::where('quiz_id', $quizId)
                     ->where('question_no', $questionNo)
                     ->first();
 
                 if ($question) {
-                    // Update existing
                     $question->update([
                         'correct_answer' => $answer,
                         'points' => $score,
                     ]);
                 } else {
-                    // Create new
-                    $newQuestion = new QuizQuestion();
-                    $newQuestion->quiz_id = $quizId;
-                    $newQuestion->question_no = $questionNo;
-                    $newQuestion->correct_answer = $answer;
-                    $newQuestion->points = $score;
-                    $this->setCommonFields($newQuestion);
-                    $newQuestion->save();
+                    $question = AnswerKey::where('quiz_id', $quizId)
+                    ->where('question_no', $questionNo)
+                    ->first();
+                    if(!$question){
+                        $newQuestion = new AnswerKey();
+                        $newQuestion->quiz_id = $quizId;
+                        $newQuestion->question_no = $questionNo;
+                        $newQuestion->correct_answer = $answer;
+                        $newQuestion->points = $score;
+                        $this->setCommonFields($newQuestion);
+                        $newQuestion->save();
+                    }else{
+                        $question->update([
+                            'correct_answer' => $answer,
+                            'points' => $score,
+                        ]);
+                    }
                 }
             }
 
@@ -95,7 +103,7 @@ class QuizController extends Controller
         $quiz->save();
 
         for($i = 1; $i <= $quiz->total_items; $i++){
-            $quizAns = new QuizQuestion();
+            $quizAns = new AnswerKey();
             $quizAns->quiz_id = $quiz->id;
             $quizAns->question_no = $i;
             $quizAns->correct_answer = '';
