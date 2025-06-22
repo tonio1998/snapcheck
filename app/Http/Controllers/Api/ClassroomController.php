@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Classroom;
+use App\Models\QuizQuestion;
 use App\Traits\TCommonFunctions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
