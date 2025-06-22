@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Classroom;
+use App\Models\Classes;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,9 +14,9 @@ class ClassroomSeeder extends Seeder
     public function run(): void
     {
         for ($i = 1; $i <= 30; $i++) {
-            Classroom::create([
+            Classes::create([
                 'user_id'    => rand(1, 5), // assumes you have users with IDs 1-5
-                'name'       => 'Classroom ' . $i,
+                'name'       => 'Classes ' . $i,
                 'subject'    => 'Subject ' . $i,
                 'created_by' => 1,
                 'updated_by' => 1,

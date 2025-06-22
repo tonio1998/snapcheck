@@ -14,7 +14,7 @@ class AnswerSheetController extends Controller
         $quiz = Quiz::with('questions')->findOrFail($id);
         $totalItems = $quiz->total_items;
 
-        $timestamp = now()->format('Ymd_His'); 
+        $timestamp = now()->format('Ymd_His');
 
         return Pdf::loadView('pdf.answer_sheet', [
             'quiz' => $quiz,

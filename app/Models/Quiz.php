@@ -16,7 +16,7 @@ class Quiz extends Model
 
     public function class()
     {
-        return $this->belongsTo(Classroom::class, 'class_id');
+        return $this->belongsTo(Classes::class, 'class_id');
     }
 
     public function user()
@@ -26,7 +26,7 @@ class Quiz extends Model
 
     public function questions()
     {
-        return $this->hasMany(QuizQuestion::class);
+        return $this->hasMany(AnswerKey::class);
     }
 
     public function scans()
@@ -36,6 +36,6 @@ class Quiz extends Model
 
     public function answerKeys()
     {
-        return $this->hasMany(QuizQuestion::class);
+        return $this->hasMany(AnswerKey::class);
     }
 }

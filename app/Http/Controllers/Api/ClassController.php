@@ -3,18 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Classroom;
-use App\Models\QuizQuestion;
+use App\Models\Classes;
 use App\Traits\TCommonFunctions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ClassroomController extends Controller
+class ClassController extends Controller
 {
     use TCommonFunctions;
     public function index()
     {
-        return Classroom::with('user')->where('user_id', Auth::id())->get();
+        return Classes::with('user')->where('user_id', Auth::id())->get();
     }
 
 
@@ -25,7 +24,7 @@ class ClassroomController extends Controller
             // 'subject' => 'required|string|max:255',
         ]);
 
-        $class = new Classroom($validated);
+        $class = new Classes($validated);
         $class->user_id = Auth::id();
         $this->setCommonFields($class);
         $class->save();
@@ -36,7 +35,7 @@ class ClassroomController extends Controller
 
     public function show($id)
     {
-        $class = Classroom::where('id', $id)->where('user_id', Auth::id())->first();
+        $class = Classes::where('id', $id)->where('user_id', Auth::id())->first();
 
         if (!$class) {
             return response()->json(['message' => 'Class not found'], 404);
@@ -47,7 +46,7 @@ class ClassroomController extends Controller
 
     public function update(Request $request, $id)
     {
-        $class = Classroom::where('id', $id)->where('user_id', Auth::id())->first();
+        $class = Classes::where('id', $id)->where('user_id', Auth::id())->first();
 
         if (!$class) {
             return response()->json(['message' => 'Class not found'], 404);
@@ -68,7 +67,7 @@ class ClassroomController extends Controller
 
     public function destroy($id)
     {
-        $class = Classroom::where('id', $id)->where('user_id', Auth::id())->first();
+        $class = Classes::where('id', $id)->where('user_id', Auth::id())->first();
 
         if (!$class) {
             return response()->json(['message' => 'Class not found'], 404);
